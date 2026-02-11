@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>LUMINA NATURA — wild essence archive</title>
+  
+  <!-- Google Fonts: Cormorant Garamond + Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons (only nature icons) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- AOS (Animate on Scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <style>
+    /* ———— ORGANIC PALETTE — ROOTED, NO COMMERCE ———— */
+    body {
+      background-color: #f5f2eb;
+      font-family: 'Inter', sans-serif;
+      color: #2c4a3b;
+      line-height: 1.6;
+    }
+    h1, h2, h3, .font-serif-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    /* ———— HERO WITH NATURE BACKGROUND ———— */
+    .hero-nature-bg {
+      background-image: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=2670&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center 30%;
+      position: relative;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, rgba(44,74,59,0.1) 0%, rgba(44,74,59,0.2) 100%);
+      backdrop-filter: blur(1.5px);
+    }
+
+    /* ———— NAVBAR (PURE, NO ICONS) ———— */
+    .navbar {
+      background-color: transparent;
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), 
+                  background-color 0.25s ease;
+      will-change: transform, background-color;
+    }
+    .navbar-scrolled {
+      background-color: #f5f2eb !important;
+      box-shadow: 0 8px 28px -8px rgba(44, 74, 59, 0.08);
+    }
+    .navbar-hidden {
+      transform: translateY(-100%);
+    }
+    .nav-link {
+      position: relative;
+      text-decoration: none;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1.5px;
+      bottom: -4px;
+      left: 0;
+      background-color: #4a6b4f;
+      transition: width 0.35s ease-out;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* ———— BUTTON LEFT-TO-RIGHT SMOOTH ———— */
+    .btn-nature {
+      background-color: transparent;
+      border: 1.2px solid #2c4a3b;
+      color: #2c4a3b;
+      padding: 0.85rem 2.5rem;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.25s ease, border-color 0.2s;
+      z-index: 1;
+      display: inline-block;
+    }
+    .btn-nature::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background-color: #2c4a3b;
+      transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: -1;
+    }
+    .btn-nature:hover {
+      color: #f5f2eb;
+      border-color: #2c4a3b;
+    }
+    .btn-nature:hover::before {
+      width: 100%;
+    }
+
+    /* ———— IMAGE ORGANIC STYLING ———— */
+    .img-organic {
+      border-radius: 2rem;
+      overflow: hidden;
+      transition: transform 0.45s ease, box-shadow 0.45s;
+      box-shadow: 0 20px 35px -15px rgba(44, 74, 59, 0.12);
+    }
+    .img-organic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+    .img-organic:hover img {
+      transform: scale(1.05);
+    }
+
+    /* ———— GALLERY GRID — PURE, BOTANICAL, NO PRICE ———— */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 24px;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .grid-item {
+      position: relative;
+      overflow: hidden;
+      background-color: #e0e0e0;
+      border-radius: 1.5rem;  /* softer, matches organic aesthetic */
+      box-shadow: 0 12px 28px -10px rgba(44, 74, 59, 0.08);
+      transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+    }
+    .grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .grid-item:hover img {
+      transform: scale(1.06);
+    }
+    .grid-item:hover {
+      box-shadow: 0 28px 45px -15px rgba(44, 74, 59, 0.18);
+    }
+    /* baris atas: 3 item — masing-masing span 2 kolum */
+    .item-1, .item-2, .item-3 {
+      grid-column: span 2;
+      height: 320px;
+    }
+    /* baris bawah: 2 item — masing-masing span 3 kolum */
+    .item-4, .item-5 {
+      grid-column: span 3;
+      height: 400px;
+    }
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .item-1, .item-2, .item-3, .item-4, .item-5 {
+        grid-column: span 1;
+        height: 280px;
+      }
+    }
+
+    /* ———— LEAF DECOR (NATURE LAYERS) ———— */
+    .leaf-bg-right {
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.06"><path fill="%232c4a3b" d="M61.7,29.5c-3.5-5.2-9.6-8.6-16.5-8.6c-7.2,0-13.6,3.7-17.1,9.3c-2.6,4.2-3.7,9.1-2.9,13.9c-2.9,2.1-5,5.5-5,9.4c0,5.1,3.2,9.4,7.7,11.2c0.9,4.3,3.4,8.2,7,11.1c4.7,3.8,10.8,5.7,17,5.2c9.9-0.8,18.1-8.6,20.2-18.3c0.8-3.8,0.5-7.7-0.8-11.3c2.9-2.8,4.7-6.6,4.7-10.8C74.1,37.7,68.8,31.4,61.7,29.5z"/></svg>') no-repeat;
+      background-position: right bottom;
+      background-size: 160px;
+    }
+    .leaf-bg-left {
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.06"><path fill="%232c4a3b" d="M38.3,70.5c3.5,5.2,9.6,8.6,16.5,8.6c7.2,0,13.6-3.7,17.1-9.3c2.6-4.2,3.7-9.1,2.9-13.9c2.9-2.1,5-5.5,5-9.4c0-5.1-3.2-9.4-7.7-11.2c-0.9-4.3-3.4-8.2-7-11.1c-4.7-3.8-10.8-5.7-17-5.2c-9.9,0.8-18.1,8.6-20.2,18.3c-0.8,3.8-0.5,7.7,0.8,11.3c-2.9,2.8-4.7,6.6-4.7,10.8C25.9,62.3,31.2,68.6,38.3,70.5z"/></svg>') no-repeat;
+      background-position: left top;
+      background-size: 140px;
+    }
+
+    /* ———— LUCIDE STROKE ———— */
+    i[data-lucide] {
+      stroke-width: 1.5;
+      color: #2c4a3b;
+    }
+
+    /* ———— FOOTER MINIMAL ———— */
+    .footer-note {
+      border-top: 1px solid rgba(44,74,59,0.08);
+      background: #f5f2eb;
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- ======== FIXED NAVIGATION – NO SEARCH, NO BAG ======== -->
+  <nav id="navbar" class="navbar fixed top-0 left-0 w-full z-50 py-5 px-6 lg:px-14 flex items-center justify-between">
+    <div class="font-serif-heading text-2xl lg:text-3xl font-bold tracking-wide text-[#2c4a3b] drop-shadow-sm">LUMINA NATURA</div>
+    <div class="hidden md:flex items-center space-x-10 lg:space-x-14 nav-links">
+      <a href="#" class="nav-link text-sm uppercase tracking-[0.14em] text-[#2c4a3b] font-medium">Home</a>
+      <a href="#" class="nav-link text-sm uppercase tracking-[0.14em] text-[#2c4a3b] font-medium">Essence</a>
+      <a href="#" class="nav-link text-sm uppercase tracking-[0.14em] text-[#2c4a3b] font-medium">Field</a>
+      <a href="#" class="nav-link text-sm uppercase tracking-[0.14em] text-[#2c4a3b] font-medium">Contact</a>
+    </div>
+    <!-- no icons — pure silence -->
+  </nav>
+
+  <!-- ======== HERO WITH WILD MEADOW BACKGROUND ======== -->
+  <section class="hero-nature-bg relative min-h-screen flex items-center px-6 lg:px-14 pt-32 pb-16 md:py-0 overflow-hidden">
+    <div class="hero-overlay"></div>
+    <div class="absolute right-6 top-40 opacity-20 hidden lg:block" data-aos="fade-left" data-aos-duration="1500">
+      <i data-lucide="leaf" class="w-24 h-24 stroke-[1] text-[#3e5e47]"></i>
+    </div>
+    <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 lg:gap-16 items-center relative z-20">
+      <div data-aos="fade-right" data-aos-duration="1000" class="space-y-6 lg:space-y-8 bg-white/20 backdrop-blur-sm p-8 lg:p-10 rounded-[2.5rem] border border-white/30">
+        <h1 class="font-serif-heading text-5xl lg:text-7xl xl:text-7xl font-bold leading-[1.1] text-[#1f3628] drop-shadow-sm">
+          Where forest<br>meets ritual
+        </h1>
+        <p class="text-base lg:text-lg text-[#1f3628] font-medium max-w-md leading-relaxed">
+          Wild-crafted botanicals, cold moon harvests — slow beauty born from ancient groves. No excess, only earth.
+        </p>
+        <button class="btn-nature">wander into wild</button>
+      </div>
+      <div data-aos="fade-left" data-aos-duration="1200" class="img-organic w-full h-[26rem] lg:h-[34rem] rounded-[2.8rem] shadow-2xl">
+        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2672&auto=format&fit=crop" alt="fern leaf macro">
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SECTION 1: BOTANICAL GALLERY (GRID 3 ATAS, 2 BAWAH) – NO PRICE, NO CART ======== -->
+  <section class="py-28 px-6 lg:px-14 bg-[#f5f2eb] relative overflow-hidden">
+    <div class="absolute inset-0 leaf-bg-right pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto relative z-20">
+      <div class="text-center mb-16 space-y-4" data-aos="fade-up" data-aos-duration="900">
+        <span class="inline-block px-5 py-2 bg-[#dde2d1] text-[#2c4a3b] rounded-full text-xs uppercase tracking-[.20em] font-semibold">still life, wild essence</span>
+        <h2 class="font-serif-heading text-4xl lg:text-5xl text-[#2c4a3b]">grove archive</h2>
+        <p class="text-[#2c4a3b] opacity-70 max-w-2xl mx-auto text-lg">five fragments of botanical stillness — no transaction, only presence.</p>
+      </div>
+
+      <!-- GALLERY GRID (exact layout from request, adapted with organic rounding) -->
+      <div class="gallery-grid">
+        <div class="grid-item item-1" data-aos="zoom-in-up" data-aos-delay="100">
+          <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=600&auto=format&fit=crop" alt="botanical essence bottle">
+        </div>
+        <div class="grid-item item-2" data-aos="zoom-in-up" data-aos-delay="200">
+          <img src="https://images.unsplash.com/photo-1585232004123-475354979b0c?q=80&w=600&auto=format&fit=crop" alt="natural serum jar">
+        </div>
+        <div class="grid-item item-3" data-aos="zoom-in-up" data-aos-delay="300">
+          <img src="https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=600&auto=format&fit=crop" alt="dropper with oil">
+        </div>
+        <div class="grid-item item-4" data-aos="zoom-in-up" data-aos-delay="400">
+          <img src="https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?q=80&w=800&auto=format&fit=crop" alt="ceramic cream pot">
+        </div>
+        <div class="grid-item item-5" data-aos="zoom-in-up" data-aos-delay="500">
+          <img src="https://images.unsplash.com/photo-1571781565036-d3f7595ca31a?q=80&w=800&auto=format&fit=crop" alt="green glass bottle">
+        </div>
+      </div>
+      <div class="text-center mt-12 opacity-60 text-sm text-[#2c4a3b] flex items-center justify-center gap-2">
+        <i data-lucide="vegan" class="w-4 h-4"></i> pure vessels, no price tags
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SECTION 2: WILD HARVEST PROMISE (EXISTING, KEPT) ======== -->
+  <section class="py-20 px-6 lg:px-14 bg-[#e8ede3] relative overflow-hidden">
+    <div class="absolute left-0 top-0 w-64 h-64 opacity-10">
+      <i data-lucide="sprout" class="w-full h-full stroke-[0.8]"></i>
+    </div>
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div data-aos="fade-right" data-aos-duration="1200" class="img-organic rounded-[3rem] h-[30rem] shadow-2xl">
+          <img src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&auto=format&fit=crop" alt="wildflower field">
+        </div>
+        <div data-aos="fade-left" data-aos-duration="1200" class="space-y-6">
+          <span class="text-[#2c4a3b] uppercase tracking-[0.3em] text-xs border-b border-[#2c4a3b] pb-2 inline-block">wild pact</span>
+          <h2 class="font-serif-heading text-4xl lg:text-5xl text-[#2c4a3b] leading-tight">we harvest only<br>what whispers back</h2>
+          <div class="border-l-4 border-[#a6b8a5] pl-6 space-y-3">
+            <p class="text-lg text-[#2c4a3b] opacity-85">No tarmac, no toxins. Our kin are the fog‑fed valleys and the lichen‑covered oaks. Each bottle is a letter from the wild.</p>
+            <p class="text-base italic text-[#2c4a3b] opacity-70">— plastic neutral, always bare —</p>
+          </div>
+          <div class="flex gap-5 pt-4">
+            <div class="flex items-center gap-2"><i data-lucide="leaf" class="w-5 h-5"></i><span class="text-sm">carbon negative</span></div>
+            <div class="flex items-center gap-2"><i data-lucide="flower-2" class="w-5 h-5"></i><span class="text-sm">48 wild species</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SECTION 3: ROOTED IN PURITY (ABOUT) ======== -->
+  <section class="py-28 px-6 lg:px-14 bg-white/40 backdrop-blur-[1px] leaf-bg-left">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-14 items-center">
+      <div data-aos="flip-left" data-aos-duration="1100" class="img-organic w-full h-96 lg:h-[34rem] rounded-[2.5rem] shadow-2xl order-2 md:order-1 relative">
+        <img src="https://images.unsplash.com/photo-1425913397330-cf8af2efa40b?w=800&auto=format&fit=crop" alt="mossy forest">
+        <div class="absolute bottom-4 left-4 bg-white/40 backdrop-blur-md px-5 py-2 rounded-full text-xs text-[#2c4a3b] flex items-center gap-1">
+          <i data-lucide="tree-deciduous" class="w-4 h-4"></i> ancestral grove
+        </div>
+      </div>
+      <div class="space-y-6 order-1 md:order-2" data-aos="fade-up" data-aos-duration="1000">
+        <h2 class="font-serif-heading text-4xl lg:text-5xl text-[#2c4a3b] leading-tight">rooted in purity</h2>
+        <div class="border-l-4 border-[#b8c6b2] pl-6 space-y-4">
+          <p class="text-lg text-[#2c4a3b] opacity-85 leading-relaxed">
+            Lumina Natura is a dialogue between skin and soil — we gather petals at first light, 
+            press oils in a stone mill, and listen to the quiet wisdom of mycelium. No fillers, 
+            no synthetic whispers. Only earth, time, and patience.
+          </p>
+          <p class="text-lg text-[#2c4a3b] opacity-80 italic">“we leave only barefoot prints”</p>
+        </div>
+        <button class="btn-nature text-sm mt-2">read the field journal</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SECTION 4: TRANQUIL BOTANICAL BANNER ======== -->
+  <section class="relative h-[450px] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop" alt="sunlight through leaves" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-[#2c4a3b]/30 backdrop-blur-[2px]"></div>
+    </div>
+    <div class="relative z-20 text-center px-6 max-w-3xl" data-aos="zoom-in" data-aos-duration="1500">
+      <i data-lucide="droplet" class="w-12 h-12 mx-auto text-white/90 stroke-1 mb-4"></i>
+      <h2 class="font-serif-heading text-white text-5xl lg:text-6xl leading-tight drop-shadow-lg">stillness, gathered</h2>
+      <p class="text-white/90 text-lg mt-4 italic">no database, no cart — just the memory of rain</p>
+    </div>
+  </section>
+
+  <!-- ======== SECTION 5 (NEW): FOREST ALCHEMY — ANOTHER LAYER OF NATURE ======== -->
+  <section class="py-28 px-6 lg:px-14 bg-[#f5f2eb]">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <div data-aos="fade-right" data-aos-duration="1000" class="space-y-6 order-2 md:order-1">
+        <span class="text-[#2c4a3b] uppercase tracking-[0.3em] text-xs border-b border-[#2c4a3b] pb-2 inline-block">forest alchemy</span>
+        <h2 class="font-serif-heading text-4xl lg:text-5xl text-[#2c4a3b] leading-tight">where light<br>through leaves</h2>
+        <div class="border-l-4 border-[#b1c1a7] pl-6 space-y-3">
+          <p class="text-lg text-[#2c4a3b] opacity-85">We work with the forest, not against it. Every harvest is a ceremony — wild mint at dawn, yarrow before the first frost. This is beauty without urgency.</p>
+          <p class="text-base italic text-[#2c4a3b] opacity-70">— 2026 field notes —</p>
+        </div>
+        <div class="flex gap-6 pt-2">
+          <i data-lucide="cloud-sun" class="w-6 h-6"></i>
+          <i data-lucide="droplets" class="w-6 h-6"></i>
+          <i data-lucide="wind" class="w-6 h-6"></i>
+        </div>
+      </div>
+      <div data-aos="fade-left" data-aos-duration="1200" class="img-organic w-full h-96 lg:h-[28rem] rounded-[2.5rem] shadow-2xl order-1 md:order-2">
+        <img src="https://images.unsplash.com/photo-1584587398355-8d92de6f6c28?w=800&auto=format&fit=crop" alt="fern and moss" class="w-full h-full object-cover">
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SECTION 6 (NEW): BOTANICAL FIELD JOURNAL (TEXTURE) ======== -->
+  <section class="py-24 px-6 lg:px-14 bg-[#e0e6da] relative">
+    <div class="absolute right-10 bottom-10 opacity-5">
+      <i data-lucide="scroll-text" class="w-40 h-40"></i>
+    </div>
+    <div class="max-w-4xl mx-auto text-center relative z-20" data-aos="fade-up" data-aos-duration="1200">
+      <i data-lucide="feather" class="w-10 h-10 mx-auto text-[#2c4a3b] mb-5 stroke-1"></i>
+      <h2 class="font-serif-heading text-4xl md:text-5xl text-[#2c4a3b] mb-6">slow preservation</h2>
+      <p class="text-lg text-[#2c4a3b] opacity-80 leading-relaxed max-w-2xl mx-auto">
+        This is a static garden — no checkout, no inventory. Only the quiet act of witnessing. 
+        We invite you to breathe, to rest, to remember that some things are not for sale.
+      </p>
+      <div class="mt-10 flex justify-center gap-8 text-sm text-[#2c4a3b] opacity-70">
+        <span>✦ wild-harvested</span>
+        <span>✦ cold-pressed</span>
+        <span>✦ moon-phase bottled</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FOOTER — PURE & SILENT ======== -->
+  <footer class="footer-note py-12 px-6 text-center text-[#2c4a3b] opacity-70 text-sm tracking-wide">
+    <div class="max-w-4xl mx-auto space-y-3">
+      <div class="font-serif-heading text-2xl tracking-wider text-[#2c4a3b]">LUMINA NATURA</div>
+      <p class="text-xs uppercase tracking-[.25em]">wild essence · slow preservation · no commerce</p>
+      <p class="pt-6 text-[#2c4a3b] opacity-50">© 2026 a field journal — static & botanical</p>
+    </div>
+  </footer>
+
+  <!-- ======== AOS + LUCIDE + SCROLL NAVIGATION ======== -->
+  <script>
+    (function() {
+      "use strict";
+      if (typeof AOS !== 'undefined') {
+        AOS.init({ once: true, duration: 1000, easing: 'ease-out-quad', offset: 80 });
+      }
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      // navbar scroll hide
+      const navbar = document.getElementById('navbar');
+      let lastScrollTop = 0;
+      const SCROLL_THRESHOLD = 20, HIDE_THRESHOLD = 80;
+      function handleNavbarScroll() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > SCROLL_THRESHOLD) navbar.classList.add('navbar-scrolled');
+        else navbar.classList.remove('navbar-scrolled');
+        if (scrollTop > lastScrollTop && scrollTop > HIDE_THRESHOLD) navbar.classList.add('navbar-hidden');
+        else navbar.classList.remove('navbar-hidden');
+        lastScrollTop = Math.max(scrollTop, 0);
+      }
+      let ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            handleNavbarScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+      window.addEventListener('load', function() {
+        handleNavbarScroll();
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        if (typeof AOS !== 'undefined') AOS.refresh();
+      });
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    })();
+  </script>
+  <!-- double lucide refresh for safety -->
+  <script>if (typeof lucide !== 'undefined') lucide.createIcons();</script>
+  <script>window.addEventListener('load', function() { if (typeof AOS !== 'undefined') AOS.refresh(); });</script>
+</body>
+</html>
